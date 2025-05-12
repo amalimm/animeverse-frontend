@@ -1,5 +1,6 @@
 'use client'
 
+import DataGrid from "@/app/components/DataGrid";
 import { loading } from "@/app/components/Loading";
 import { useAnime } from "@/app/hooks/useAnime";
 import { useEffect, useState } from "react";
@@ -21,17 +22,43 @@ export default function SummaryPage() {
         }
     });
 
+    const [filterRowPerPage, setFilterRowPerPage] = useState(pagination.items.per_page);
+    const [filterScore, setFilterScore] = useState(null);
+    const [filterGenres, setFilterGenres] = useState(null);
+    const [filterOrderBy, setFilterOrderBy] = useState('popularity');
+    const [filterSort, setFilterSort] = useState('desc');
+
     const fetchData = async () => {
-        loading.show();
-        const data = await index();
+        const data = await index({
+            rowPerPage: filterRowPerPage,
+            currentPage: pagination.current_page,
+            score: filterScore,
+            genres: filterGenres,
+            order_by: filterOrderBy,
+            sort: filterSort
+        });
         setDatas(data?.data || []);
         setPagination(data?.pagination || pagination);
-        loading.hide();
+    };
+
+    const handleChangePage = (event, newPage) => {
+        setPagination((prev) => ({
+            ...prev,
+            current_page: newPage + 1,
+        }));
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setPagination((prev) => ({
+            ...prev,
+            items: { ...prev.items, per_page: parseInt(event.target.value, 10) },
+            current_page: 1,
+        }));
     };
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [filterRowPerPage, filterScore, filterGenres, filterOrderBy, filterSort]);
 
     if (datas.length === 0) {
         return (
@@ -43,22 +70,18 @@ export default function SummaryPage() {
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-            {datas.map((data, index) => (
-                <div key={data.mal_id || index} className="bg-white p-4 rounded-lg shadow-md">
-                    <a href={data.url} target="_blank" rel="noopener noreferrer">
-                        <img
-                            src={data.images?.jpg?.image_url}
-                            alt={data.title}
-                            className="w-full h-auto rounded-lg mb-4"
-                        />
-                    </a>
-                    <h2 className="text-lg font-bold">{data.title}</h2>
-                    <p>{data.description || "No description available"}</p>
-                    <p>Score: {data.score || "N/A"}</p>
-                </div>
-            ))}
-        </div>
+        <DataGrid
+            data={datas}
+            pagination={pagination}
+            onPageChange={(newPage) => fetchData(newPage)}
+            onRowsPerPageChange={(newPerPage) => setFilterRowPerPage(newPerPage)}
+            // onFilterChange={(newFilters) => {
+            //     setFilterScore(newFilters.score);
+            //     setFilterGenres(newFilters.genres);
+            //     setFilterOrderBy(newFilters.order_by);
+            //     setFilterSort(newFilters.sort);
+            // }}
+        />
     );
 }
 

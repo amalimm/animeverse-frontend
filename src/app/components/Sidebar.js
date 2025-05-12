@@ -13,7 +13,7 @@ const Sidebar = () => {
 
     const router = useRouter();
 
-    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [selectedIndex, setSelectedIndex] = useState(null);
 
     const handleListItemClick = (index) => {
         setSelectedIndex(index);
