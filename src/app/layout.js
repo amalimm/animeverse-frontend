@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
 			</head>
 
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}>
-				<main className="flex-1 h-screen overflow-y-auto p-6 bg-gray-100">{children}</main>
+				<main className="flex-1 h-screen overflow-y-auto bg-white">{children}</main>
 				<Toaster />
 			</body>
 		</html>
