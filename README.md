@@ -25,6 +25,22 @@ Copy the `.env.example` file and rename it to `.env`. Then fill in the necessary
 cp .env.example .env
 ```
 
+### 4. Executing the environment
+
+Run in built environment (recommended). Development environment also works.
+
+```bash
+npm run build
+```
+```bash
+npm start
+```
+
+Or in development environemnt:
+```bash
+npm run dev
+```
+
 ## ✨ Features
 
 * 🔎 **Anime Search**
