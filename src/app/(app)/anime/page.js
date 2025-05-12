@@ -24,33 +24,22 @@ export default function SummaryPage() {
         }
     });
 
-    const [filterQ, setFilterQ] = useState('');
-    const [filterType, setFilterType] = useState('');
-    const [filterScore, setFilterScore] = useState(null);
-    const [filterGenres, setFilterGenres] = useState(null);
-    const [filterOrderBy, setFilterOrderBy] = useState('popularity');
-    const [filterSort, setFilterSort] = useState('desc');
+    const [filterQ, setFilterQ] = useState(null);
+    const [filterType, setFilterType] = useState(null);
+    const [filterOrderBy, setFilterOrderBy] = useState(null);
+    const [filterSort, setFilterSort] = useState(null);
+    const [filterRating, setFilterRating] = useState(null);
 
     const fetchData = async () => {
         const data = await index({
             rowPerPage: pagination.items.per_page,
             currentPage: pagination.current_page,
             page: pagination.current_page,
-            // unapproved: false,
             q: filterQ,
             type: filterType,
-            score: filterScore,
-            min_score: '',
-            max_score: '',
-            status: '',
-            rating: '',
-            sfw: true,
-            genres: filterGenres,
-            genres_exclude: '',
+            rating: filterRating,
             order_by: filterOrderBy,
             sort: filterSort,
-            start_date: '',
-            end_date: ''
         });
         setDatas(data?.data || []);
         setPagination(data?.pagination || pagination);
@@ -70,7 +59,7 @@ export default function SummaryPage() {
         loading.show();
         fetchData();
         loading.hide();
-    }, [pagination.current_page, pagination.items.per_page, filterType]);
+    }, [pagination.current_page, pagination.items.per_page, filterType, filterOrderBy, filterSort, filterRating]);
 
     useEffect(() => {
         debouncedFetchData()
@@ -102,19 +91,16 @@ export default function SummaryPage() {
             filters={{
                 q: filterQ,
                 type: filterType,
-                // score: filterScore,
-                // genres: filterGenres,
-                // order_by: filterOrderBy,
-                // sort: filterSort
+                rating: filterRating,
+                order_by: filterOrderBy,
+                sort: filterSort
             }}
             onFilterChange={(newFilters) => {
                 setFilterQ(newFilters.q)
                 setFilterType(newFilters.type)
-                // setFilterScore(newFilters.score)
-                // setFilterGenres(newFilters.genres)
-                // setFilterOrderBy(newFilters.order_by)
-                // setFilterSort(newFilters.sort)
-                // setPagination(prev => ({ ...prev, current_page: 1 }))
+                setFilterRating(newFilters.rating)
+                setFilterOrderBy(newFilters.order_by)
+                setFilterSort(newFilters.sort)
             }}
             onSelectedData={(data) => {
                 handleSelectedData(data)

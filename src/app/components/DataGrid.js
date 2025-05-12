@@ -12,16 +12,42 @@ import {
     Box
 } from '@mui/material'
 
-const animeTypes = ['tv', 'movie', 'ova', 'special', 'ona', 'music', 'cm', 'pv', 'tv_special']
-const animeRatings = ['g', 'pg', 'pg13', 'r17', 'r', 'rx']
-const orderByOptions = ['score', 'popularity', 'favorites']
-const sortOptions = ['asc', 'desc']
-const genres = [
-    { id: '1', label: 'Action' },
-    { id: '2', label: 'Adventure' },
-    { id: '4', label: 'Comedy' },
-    // Add more genres as needed
-]
+const animeTypes = [
+    'tv',
+    'movie',
+    'ova',
+    'special',
+    'ona',
+    'music',
+    'cm',
+    'pv',
+    'tv_special'
+];
+
+const orderByOptions = [
+    'mal_id',
+    'title',
+    'start_date',
+    'end_date',
+    'episodes',
+    'score',
+    'scored_by',
+    'rank',
+    'popularity',
+    'members',
+    'favorites'
+];
+
+const sortOptions = ['asc', 'desc'];
+
+const rating = [
+    'g',
+    'pg',
+    'pg13',
+    'r17',
+    'r',
+    'rx'
+];
 
 export default function DataGrid({
     datas = [],
@@ -72,30 +98,6 @@ export default function DataGrid({
                     </Select>
                 </FormControl>
 
-                {/* <TextField
-                    label="Min Score"
-                    name="score"
-                    type="number"
-                    size="small"
-                    value={filters.score || ''}
-                    onChange={handleFilterChange}
-                /> */}
-
-                {/* <FormControl size="small" sx={{ minWidth: 140 }}>
-                    <InputLabel>Genres</InputLabel>
-                    <Select
-                        name="genres"
-                        value={filters.genres || ''}
-                        onChange={handleFilterChange}
-                        label="Genres"
-                    >
-                        <MenuItem value="">All</MenuItem>
-                        {genres.map(g => (
-                            <MenuItem key={g.id} value={g.id}>{g.label}</MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
                 <FormControl size="small" sx={{ minWidth: 140 }}>
                     <InputLabel>Rating</InputLabel>
                     <Select
@@ -105,8 +107,15 @@ export default function DataGrid({
                         label="Rating"
                     >
                         <MenuItem value="">All</MenuItem>
-                        {animeRatings.map(r => (
-                            <MenuItem key={r} value={r}>{r.toUpperCase()}</MenuItem>
+                        {rating.map(r => (
+                            <MenuItem key={r} value={r}>
+                                {r === 'g' ? 'G - All Ages' :
+                                    r === 'pg' ? 'PG - Children' :
+                                        r === 'pg13' ? 'PG-13 - Teens 13 or older' :
+                                            r === 'r' ? 'R - 17+ (violence & profanity)' :
+                                                r === 'r+' ? 'R+ - Mild Nudity' :
+                                                    r === 'rx' ? 'RX - Hentai' : r.toUpperCase()}
+                            </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -119,9 +128,9 @@ export default function DataGrid({
                         onChange={handleFilterChange}
                         label="Order By"
                     >
-                        <MenuItem value="">Default</MenuItem>
+                        <MenuItem value="">DEFAULT</MenuItem>
                         {orderByOptions.map(o => (
-                            <MenuItem key={o} value={o}>{o}</MenuItem>
+                            <MenuItem key={o} value={o}>{o.split('_').map(s => s.toUpperCase()).join(' ')}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -136,10 +145,11 @@ export default function DataGrid({
                     >
                         <MenuItem value="">None</MenuItem>
                         {sortOptions.map(s => (
-                            <MenuItem key={s} value={s}>{s}</MenuItem>
+                            <MenuItem key={s} value={s}>{s.toUpperCase()}</MenuItem>
                         ))}
                     </Select>
-                </FormControl> */}
+                </FormControl>
+
             </Box>
 
             {/* DATA CARDS */}

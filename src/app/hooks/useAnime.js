@@ -14,18 +14,9 @@ export function useAnime() {
         unapproved = false,
         q = '',
         type = '',
-        score = '',
-        min_score = '',
-        max_score = '',
-        status = '',
         rating = '',
-        sfw = true,
-        genres = '',
-        genres_exclude = '',
-        order_by = 'popularity',  // default sorting by popularity
-        sort = 'desc',           // default sorting descending
-        start_date = '',
-        end_date = '',
+        order_by = 'popularity',
+        sort = 'desc',
     }) => {
         const params = {
             page: currentPage,
@@ -33,18 +24,9 @@ export function useAnime() {
             unapproved,
             q,
             type,
-            score,
-            min_score,
-            max_score,
-            status,
             rating,
-            sfw,
-            genres,
-            genres_exclude,
             order_by,
             sort,
-            start_date,
-            end_date
         };
 
         try {
