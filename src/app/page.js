@@ -4,11 +4,13 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@mui/material'
 import { motion } from 'framer-motion'
 import { FiSearch, FiTrendingUp, FiHeart, FiAward, FiPlay } from 'react-icons/fi'
+import toast from 'react-hot-toast'
 
 export default function Home() {
     const router = useRouter()
 
     const handleNavigate = () => {
+        toast.success('Welcome to AnimeVerse!')
         router.push('/dashboard/')
     }
 

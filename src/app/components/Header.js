@@ -23,7 +23,7 @@ const Header = () => {
         >
             <Toolbar sx={{ justifyContent: 'space-between' }}>
                 {/* Left Section */}
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'between', gap: 2, marginLeft: 2, marginRight: 2 }}>
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                         <IconButton
                             edge="start"
@@ -55,39 +55,6 @@ const Header = () => {
                     >
                         AnimeVerse
                     </Typography>
-                </Box>
-
-                {/* Center Search - Hidden on mobile */}
-                <Box sx={{
-                    display: { xs: 'none', md: 'flex' },
-                    flexGrow: 0.4,
-                    maxWidth: 600
-                }}>
-                    <motion.div whileHover={{ scale: 1.01 }} style={{ width: '100%' }}>
-                        <Box sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                            borderRadius: 2,
-                            px: 2,
-                            py: 0.5,
-                            width: '100%'
-                        }}>
-                            <Search sx={{ color: 'text.secondary', mr: 1 }} />
-                            <input
-                                type="text"
-                                placeholder="Search anime..."
-                                style={{
-                                    border: 'none',
-                                    background: 'transparent',
-                                    width: '100%',
-                                    outline: 'none',
-                                    padding: '8px 0',
-                                    fontSize: '0.9rem'
-                                }}
-                            />
-                        </Box>
-                    </motion.div>
                 </Box>
 
                 {/* Right Section */}
