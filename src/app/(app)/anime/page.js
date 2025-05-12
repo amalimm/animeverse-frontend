@@ -3,14 +3,15 @@
 import DataGrid from "@/app/components/DataGrid";
 import { loading } from "@/app/components/Loading";
 import { useAnime } from "@/app/hooks/useAnime";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function SummaryPage() {
 
+    const router = useRouter();
     const { index } = useAnime();
 
     const [datas, setDatas] = useState([]);
-    const [data, setData] = useState(null);
     const [pagination, setPagination] = useState({
         last_visible_page: 0,
         has_next_page: false,
@@ -42,21 +43,8 @@ export default function SummaryPage() {
         loading.hide();
     };
 
-    const handleChangePage = (newPage) => {
-        setPagination((prev) => ({
-            ...prev,
-            current_page: newPage,
-        }));
-    };
-
-    const handleChangeRowsPerPage = (newPerPage) => {
-        setPagination((prev) => ({
-            ...prev,
-            items: {
-                ...prev.items,
-                per_page: newPerPage
-            }
-        }));
+    const handleSelectedData = (id) => {
+        router.push(`/anime/${id}`);
     };
 
     useEffect(() => {
@@ -74,16 +62,30 @@ export default function SummaryPage() {
 
     return (
         <DataGrid
-            data={datas}
+            datas={datas}
             pagination={pagination}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            // onFilterChange={(newFilters) => {
-            //     setFilterScore(newFilters.score);
-            //     setFilterGenres(newFilters.genres);
-            //     setFilterOrderBy(newFilters.order_by);
-            //     setFilterSort(newFilters.sort);
-            // }}
+            onPageChange={(page) => {
+                setPagination(prev => ({ ...prev, current_page: page }))
+            }}
+            onRowsPerPageChange={(perPage) => {
+                setPagination(prev => ({ ...prev, items: { ...prev.items, per_page: perPage }, current_page: 1 }))
+            }}
+            filters={{
+                score: filterScore,
+                genres: filterGenres,
+                order_by: filterOrderBy,
+                sort: filterSort
+            }}
+            onFilterChange={(newFilters) => {
+                setFilterScore(newFilters.score)
+                setFilterGenres(newFilters.genres)
+                setFilterOrderBy(newFilters.order_by)
+                setFilterSort(newFilters.sort)
+                setPagination(prev => ({ ...prev, current_page: 1 }))
+            }}
+            onSelectedData={(data) => {
+                handleSelectedData(data)
+            }}
         />
     );
 }

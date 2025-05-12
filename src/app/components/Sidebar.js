@@ -1,19 +1,21 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Divider, Box, Typography, Avatar } from '@mui/material';
 import { navigations } from '@/data/navigations';
 import { motion } from 'framer-motion';
 import { FiCompass } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 const drawerWidth = 280;
 
 const Sidebar = () => {
 
     const router = useRouter();
+    const pathName = usePathname();
 
-    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [selectedIndex, setSelectedIndex] = useState(null);
 
     const handleListItemClick = (index) => {
         setSelectedIndex(index);
@@ -21,10 +23,11 @@ const Sidebar = () => {
     };
 
     useEffect(() => {
-        const pathname = router.asPath;
-        const index = navigations.findIndex(item => item.url === pathname);
-        setSelectedIndex(index === -1 ? 0 : index);
-    }, [router.asPath]);
+        if(!selectedIndex) {
+            const index = navigations.findIndex(item => item.url === pathName);
+            setSelectedIndex(index);
+        }
+    }, [router]);
 
     return (
         <Drawer

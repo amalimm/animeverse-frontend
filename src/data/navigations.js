@@ -1,7 +1,6 @@
 import { Dashboard, List } from "@mui/icons-material";
 
 export const navigations = [
-    { url: '/dashboard/', icon: <Dashboard />, text: "Dashboard" },
-    { url: '/browse/', icon: <List />, text: "Anime List" },
-    // {url: '/detail/',     icon: iconApproved,  text: "eVDR Application" },
+    { url: '/dashboard', icon: <Dashboard />, text: "Dashboard" },
+    { url: '/anime', icon: <List />, text: "Browse Anime" },
 ]
