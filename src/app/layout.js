@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import { LoadingOverlay } from "./components/Loading";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -25,7 +26,8 @@ export default function RootLayout({ children }) {
 			</head>
 
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}>
-				<main className="flex-1 h-screen overflow-y-auto bg-white">{children}</main>
+				<main className="flex-1 h-screen overflow-hidden bg-white">{children}</main>
+				<LoadingOverlay />
 				<Toaster />
 			</body>
 		</html>

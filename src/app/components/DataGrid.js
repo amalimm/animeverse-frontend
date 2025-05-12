@@ -29,15 +29,15 @@ export default function DataGrid({
     }
 
     return (
-        <div className="text-black p-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
+        <div className="flex flex-col items-center text-black p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8 min-h-[400px]">
                 {data.map((anime, index) => (
                     <div key={index} className="bg-white rounded-xl shadow-md overflow-hidden hover:cursor-pointer hover:bg-gray-100 hover:scale-103 transition duration-100 ease-in-out border-2 border-gray-200 hover:border-gray-500">
                         <a href={anime.url} target="_blank" rel="noopener noreferrer">
                             <img
                                 src={anime.images?.jpg?.image_url || '/fallback.jpg'}
                                 alt={anime.title}
-                                className="w-full h-64 object-cover"
+                                className="w-full h-80 object-cover"
                             />
                         </a>
                         <div className="p-4">
@@ -58,7 +58,7 @@ export default function DataGrid({
                 onPageChange={handleChangePage}
                 rowsPerPage={pagination.items?.per_page || 25}
                 onRowsPerPageChange={handleChangeRowsPerPage}
-                rowsPerPageOptions={[10, 25, 50]}
+                rowsPerPageOptions={[5, 10, 15, 20, 25]}
             />
         </div>
     )

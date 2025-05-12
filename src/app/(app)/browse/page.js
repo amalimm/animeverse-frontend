@@ -18,19 +18,19 @@ export default function SummaryPage() {
         items: {
             count: 0,
             total: 0,
-            per_page: 25
+            per_page: 10
         }
     });
 
-    const [filterRowPerPage, setFilterRowPerPage] = useState(pagination.items.per_page);
     const [filterScore, setFilterScore] = useState(null);
     const [filterGenres, setFilterGenres] = useState(null);
     const [filterOrderBy, setFilterOrderBy] = useState('popularity');
     const [filterSort, setFilterSort] = useState('desc');
 
     const fetchData = async () => {
+        loading.show();
         const data = await index({
-            rowPerPage: filterRowPerPage,
+            rowPerPage: pagination.items.per_page,
             currentPage: pagination.current_page,
             score: filterScore,
             genres: filterGenres,
@@ -39,26 +39,29 @@ export default function SummaryPage() {
         });
         setDatas(data?.data || []);
         setPagination(data?.pagination || pagination);
+        loading.hide();
     };
 
-    const handleChangePage = (event, newPage) => {
+    const handleChangePage = (newPage) => {
         setPagination((prev) => ({
             ...prev,
-            current_page: newPage + 1,
+            current_page: newPage,
         }));
     };
 
-    const handleChangeRowsPerPage = (event) => {
+    const handleChangeRowsPerPage = (newPerPage) => {
         setPagination((prev) => ({
             ...prev,
-            items: { ...prev.items, per_page: parseInt(event.target.value, 10) },
-            current_page: 1,
+            items: {
+                ...prev.items,
+                per_page: newPerPage
+            }
         }));
     };
 
     useEffect(() => {
         fetchData();
-    }, [filterRowPerPage, filterScore, filterGenres, filterOrderBy, filterSort]);
+    }, [pagination.current_page, pagination.items.per_page, filterScore, filterGenres, filterOrderBy, filterSort]);
 
     if (datas.length === 0) {
         return (
@@ -73,8 +76,8 @@ export default function SummaryPage() {
         <DataGrid
             data={datas}
             pagination={pagination}
-            onPageChange={(newPage) => fetchData(newPage)}
-            onRowsPerPageChange={(newPerPage) => setFilterRowPerPage(newPerPage)}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
             // onFilterChange={(newFilters) => {
             //     setFilterScore(newFilters.score);
             //     setFilterGenres(newFilters.genres);
