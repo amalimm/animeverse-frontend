@@ -1,8 +1,27 @@
 'use client'
 
 import React from 'react'
-import TablePagination from '@mui/material/TablePagination'
-import { Tooltip } from '@mui/material'
+import {
+    TablePagination,
+    Tooltip,
+    TextField,
+    MenuItem,
+    Select,
+    InputLabel,
+    FormControl,
+    Box
+} from '@mui/material'
+
+const animeTypes = ['tv', 'movie', 'ova', 'special', 'ona', 'music', 'cm', 'pv', 'tv_special']
+const animeRatings = ['g', 'pg', 'pg13', 'r17', 'r', 'rx']
+const orderByOptions = ['score', 'popularity', 'favorites']
+const sortOptions = ['asc', 'desc']
+const genres = [
+    { id: '1', label: 'Action' },
+    { id: '2', label: 'Adventure' },
+    { id: '4', label: 'Comedy' },
+    // Add more genres as needed
+]
 
 export default function DataGrid({
     datas = [],
@@ -13,80 +32,117 @@ export default function DataGrid({
     onFilterChange,
     onSelectedData
 }) {
-    const handleChangePage = (_event, newPage) => {
-        onPageChange(newPage + 1) // MUI: 0-indexed → API: 1-indexed
-    }
-
-    const handleChangeRowsPerPage = (event) => {
-        const newPerPage = parseInt(event.target.value, 10)
-        onRowsPerPageChange(newPerPage)
-    }
+    const handleChangePage = (_event, newPage) => onPageChange(newPage + 1)
+    const handleChangeRowsPerPage = (event) => onRowsPerPageChange(parseInt(event.target.value, 10))
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target
-        onFilterChange?.({
-            ...filters,
-            [name]: value
-        })
+        console.log(`Filter changed: ${name} = ${value}`)
+        onFilterChange?.({ ...filters, [name]: value })
     }
 
-    const handleSelectedData = (id) => {
-        onSelectedData?.(id)
-    }
+    const handleSelectedData = (id) => onSelectedData?.(id)
 
     return (
         <div className="flex flex-col items-center text-black p-6">
 
-            <div className="w-full flex flex-wrap gap-4 justify-start mb-6">
-                <select
+            {/* FILTER SECTION */}
+            <Box className="w-full flex flex-wrap gap-4 justify-start mb-6">
+                <TextField
+                    label="Search Anime"
+                    name="q"
+                    type="text"
+                    size="small"
+                    value={filters.q || ''}
+                    onChange={handleFilterChange}
+                />
+
+                <FormControl size="small" sx={{ minWidth: 140 }}>
+                    <InputLabel>Type</InputLabel>
+                    <Select
+                        name="type"
+                        value={filters?.type || ''}
+                        onChange={handleFilterChange}
+                        label="Type"
+                    >
+                        <MenuItem value="">NONE</MenuItem>
+                        {animeTypes.map(t => (
+                            <MenuItem key={t} value={t}>{t.replace(/_/g, ' ').toUpperCase()}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                {/* <TextField
+                    label="Min Score"
                     name="score"
+                    type="number"
+                    size="small"
                     value={filters.score || ''}
                     onChange={handleFilterChange}
-                    className="border rounded p-2"
-                >
-                    <option value="">All Scores</option>
-                    {[...Array(10)].map((_, i) => (
-                        <option key={i + 1} value={i + 1}>{i + 1}+</option>
-                    ))}
-                </select>
+                /> */}
 
-                <select
-                    name="genres"
-                    value={filters.genres || ''}
-                    onChange={handleFilterChange}
-                    className="border rounded p-2"
-                >
-                    <option value="">All Genres</option>
-                    <option value="1">Action</option>
-                    <option value="2">Adventure</option>
-                    <option value="4">Comedy</option>
-                    {/* Add more genre IDs as needed */}
-                </select>
+                {/* <FormControl size="small" sx={{ minWidth: 140 }}>
+                    <InputLabel>Genres</InputLabel>
+                    <Select
+                        name="genres"
+                        value={filters.genres || ''}
+                        onChange={handleFilterChange}
+                        label="Genres"
+                    >
+                        <MenuItem value="">All</MenuItem>
+                        {genres.map(g => (
+                            <MenuItem key={g.id} value={g.id}>{g.label}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
 
-                <select
-                    name="order_by"
-                    value={filters.order_by || ''}
-                    onChange={handleFilterChange}
-                    className="border rounded p-2"
-                >
-                    <option value="">Order By</option>
-                    <option value="score">Score</option>
-                    <option value="popularity">Popularity</option>
-                    <option value="favorites">Favorites</option>
-                </select>
+                <FormControl size="small" sx={{ minWidth: 140 }}>
+                    <InputLabel>Rating</InputLabel>
+                    <Select
+                        name="rating"
+                        value={filters.rating || ''}
+                        onChange={handleFilterChange}
+                        label="Rating"
+                    >
+                        <MenuItem value="">All</MenuItem>
+                        {animeRatings.map(r => (
+                            <MenuItem key={r} value={r}>{r.toUpperCase()}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
 
-                <select
-                    name="sort"
-                    value={filters.sort || ''}
-                    onChange={handleFilterChange}
-                    className="border rounded p-2"
-                >
-                    <option value="">Sort</option>
-                    <option value="desc">Descending</option>
-                    <option value="asc">Ascending</option>
-                </select>
-            </div>
+                <FormControl size="small" sx={{ minWidth: 140 }}>
+                    <InputLabel>Order By</InputLabel>
+                    <Select
+                        name="order_by"
+                        value={filters.order_by || ''}
+                        onChange={handleFilterChange}
+                        label="Order By"
+                    >
+                        <MenuItem value="">Default</MenuItem>
+                        {orderByOptions.map(o => (
+                            <MenuItem key={o} value={o}>{o}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
 
+                <FormControl size="small" sx={{ minWidth: 140 }}>
+                    <InputLabel>Sort</InputLabel>
+                    <Select
+                        name="sort"
+                        value={filters.sort || ''}
+                        onChange={handleFilterChange}
+                        label="Sort"
+                    >
+                        <MenuItem value="">None</MenuItem>
+                        {sortOptions.map(s => (
+                            <MenuItem key={s} value={s}>{s}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl> */}
+            </Box>
+
+            {/* DATA CARDS */}
             {(!datas || datas.length === 0) ? (
                 <div className="text-center p-6">
                     <h2 className="text-2xl font-semibold">No anime found</h2>
@@ -97,20 +153,14 @@ export default function DataGrid({
                     {datas.map((data, index) => (
                         <div
                             key={index}
-                            className="bg-white rounded-xl shadow-md overflow-hidden hover:cursor-pointer hover:bg-gray-100 hover:scale-103 transition duration-100 ease-in-out border-2 border-gray-200 hover:border-gray-500"
                             onClick={() => handleSelectedData(data?.mal_id)}
+                            className="bg-white rounded-xl shadow-md overflow-hidden hover:cursor-pointer hover:bg-gray-100 hover:scale-103 transition duration-100 ease-in-out border-2 border-gray-200 hover:border-gray-500"
                         >
-                            {/* <a
-                                href={data.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            > */}
-                                <img
-                                    src={data.images?.jpg?.image_url || '/fallback.jpg'}
-                                    alt={data.title}
-                                    className="w-full h-80 object-cover"
-                                />
-                            {/* </a> */}
+                            <img
+                                src={data.images?.jpg?.image_url || '/fallback.jpg'}
+                                alt={data.title}
+                                className="w-full h-80 object-cover"
+                            />
                             <div className="p-4">
                                 <Tooltip title={data.title}>
                                     <h3 className="text-sm font-bold mb-2 line-clamp-1 hover:underline">{data.title}</h3>
@@ -123,6 +173,7 @@ export default function DataGrid({
                 </div>
             )}
 
+            {/* PAGINATION */}
             <TablePagination
                 component="div"
                 count={pagination.items?.total || 0}
@@ -135,4 +186,3 @@ export default function DataGrid({
         </div>
     )
 }
-
