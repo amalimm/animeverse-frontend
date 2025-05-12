@@ -51,12 +51,28 @@ const rating = [
 
 export default function DataGrid({
     datas = [],
-    pagination,
-    onPageChange,
-    onRowsPerPageChange,
-    filters = {},
-    onFilterChange,
-    onSelectedData
+    pagination = {
+        last_visible_page: 0,
+        has_next_page: false,
+        current_page: 1,
+        items: {
+            count: 0,
+            total: 0,
+            per_page: 10
+        }
+    },
+    onPageChange = () => {},
+    onRowsPerPageChange = () => {},
+    filters = {
+        type: '',
+        order_by: 'popularity',
+        sort: 'desc',
+        q: '',
+        rating: ''
+    },
+    onFilterChange = () => {},
+    onSelectedData = () => {},
+    has_next_page = true
 }) {
     const handleChangePage = (_event, newPage) => onPageChange(newPage + 1)
     const handleChangeRowsPerPage = (event) => onRowsPerPageChange(parseInt(event.target.value, 10))
@@ -192,6 +208,7 @@ export default function DataGrid({
                 rowsPerPage={pagination.items?.per_page || 25}
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 rowsPerPageOptions={[5, 10, 15, 20, 25]}
+                disabled={!has_next_page ?? false}
             />
         </div>
     )

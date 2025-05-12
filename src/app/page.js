@@ -11,7 +11,7 @@ export default function Home() {
 
     const handleNavigate = () => {
         toast.success('Welcome to AnimeVerse!')
-        router.push('/dashboard/')
+        router.push('/anime')
     }
 
     const features = [

@@ -7,7 +7,7 @@ import debounce from "lodash.debounce";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
-export default function SummaryPage() {
+export default function AnimePage() {
 
     const router = useRouter();
     const { index } = useAnime();
@@ -31,6 +31,7 @@ export default function SummaryPage() {
     const [filterRating, setFilterRating] = useState(null);
 
     const fetchData = async () => {
+        loading.show();
         const data = await index({
             rowPerPage: pagination.items.per_page,
             currentPage: pagination.current_page,
@@ -43,6 +44,7 @@ export default function SummaryPage() {
         });
         setDatas(data?.data || []);
         setPagination(data?.pagination || pagination);
+        loading.hide();
     };
 
     const handleSelectedData = (id) => {
@@ -56,9 +58,7 @@ export default function SummaryPage() {
     );
 
     useEffect(() => {
-        loading.show();
         fetchData();
-        loading.hide();
     }, [pagination.current_page, pagination.items.per_page, filterType, filterOrderBy, filterSort, filterRating]);
 
     useEffect(() => {

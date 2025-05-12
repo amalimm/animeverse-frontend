@@ -31,7 +31,7 @@ export function useAnime() {
 
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/anime`, {
-                params: params, // Passing all query params to the API
+                params: params,
             });
             return response.data;
         } catch (error) {
