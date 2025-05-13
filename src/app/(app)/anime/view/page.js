@@ -1,18 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
 import { useAnime } from '@/app/hooks/useAnime';
 import { loading } from '@/app/components/Loading';
 import { FiStar, FiUsers, FiAward, FiCalendar, FiClock, FiTv, FiPlay, FiHeart, FiShare2, FiChevronLeft } from 'react-icons/fi';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function AnimeDetailPage() {
-    const params = useParams();
+
     const router = useRouter();
-    const { id } = params;
-    const { show } = useAnime();
+    const searchParams = useSearchParams();
+    const id = searchParams.get('id'); const { show } = useAnime();
+
     const [anime, setAnime] = useState(null);
     const [error, setError] = useState(null);
 
@@ -53,8 +53,8 @@ export default function AnimeDetailPage() {
                 {/* Header with Cover Image */}
                 <div
                     className={`relative h-48 md:h-64 ${!anime.images?.jpg?.large_image_url
-                            ? 'bg-gradient-to-r from-purple-500 to-pink-500'
-                            : 'bg-white'
+                        ? 'bg-gradient-to-r from-purple-500 to-pink-500'
+                        : 'bg-white'
                         }`}
                 >
                     {anime.images?.jpg?.large_image_url && (

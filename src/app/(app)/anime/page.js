@@ -48,7 +48,7 @@ export default function AnimePage() {
     };
 
     const handleSelectedData = (id) => {
-        router.push(`/anime/${id}`);
+        router.push(`/anime/view?id=${id}`);
     };
 
     const debouncedFetchData = useMemo(() =>

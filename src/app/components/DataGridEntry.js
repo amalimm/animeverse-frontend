@@ -131,7 +131,7 @@ export default function DataGridEntry({
             )}
 
             {/* PAGINATION */}
-            <TablePagination
+            {/* <TablePagination
                 component="div"
                 count={pagination.items?.total || 0}
                 page={pagination.current_page - 1}
@@ -140,7 +140,7 @@ export default function DataGridEntry({
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 rowsPerPageOptions={[5, 10, 15, 20, 25]}
                 disabled={!has_next_page ?? false}
-            />
+            /> */}
         </div>
     )
 }

@@ -83,7 +83,7 @@ const Header = () => {
                                 cursor: 'pointer',
                                 border: '2px solid rgba(236, 72, 153, 0.3)'
                             }}
-                            onClick={() => router.push('/profile')}
+                            // onClick={() => router.push('/profile')}
                         />
                     </motion.div>
                 </Box>

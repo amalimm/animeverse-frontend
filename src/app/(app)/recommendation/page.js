@@ -50,7 +50,7 @@ export default function RecommendationPage() {
             onPageChange={(page) => {
                 setPagination(prev => ({ ...prev, current_page: page }))
             }}
-            onSelectedData={(id) => router.push(`/anime/${id}`)}
+            onSelectedData={(id) => router.push(`/anime/view?id=${id}`)}
             has_next_page={!pagination.has_next_page}
         />
     );
